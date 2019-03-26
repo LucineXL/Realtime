@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Dropdown, Menu, Spin, Divider, Avatar } from 'antd';
+import { Icon, Menu, Divider, Dropdown, Avatar, Spin } from 'antd'; // eslint-disable-line
 import Debounce from 'lodash-decorators/debounce';
 import { Link } from 'react-router-dom';
-import avatar from 'assets/img/avatar.jpeg';
+// import avatar from 'assets/img/avatar.jpeg';
 import styles from './index.less';
 
-const spinStyle = {
-    marginLeft: 8,
-};
-const triggerMethod = ['hover', 'click'];
+// const spinStyle = {
+//     marginLeft: 8,
+// };
+// const triggerMethod = ['hover', 'click'];
 
 export default class GlobalHeader extends React.PureComponent {
     constructor(props) {
@@ -42,17 +42,17 @@ export default class GlobalHeader extends React.PureComponent {
         this.triggerResizeEvent();
     }
 
-    @Debounce(600)
-    triggerResizeEvent() {
-        if (document.createEvent) {
-            const event = document.createEvent('HTMLEvents');
-            event.initEvent('resize', true, true);
-            window.dispatchEvent(event);
-        } else if (document.createEventObject) {
-            const event = document.createEventObject();
-            window.fireEvent('onresize', event);
-        }
-    }
+    // @Debounce(600)
+    // triggerResizeEvent() {
+    //     if (document.createEvent) {
+    //         const event = document.createEvent('HTMLEvents');
+    //         event.initEvent('resize', true, true);
+    //         window.dispatchEvent(event);
+    //     } else if (document.createEventObject) {
+    //         const event = document.createEventObject();
+    //         window.fireEvent('onresize', event);
+    //     }
+    // }
 
     handleMenuClick = (e) => {
         const { handleLogout } = this.props;
@@ -64,7 +64,7 @@ export default class GlobalHeader extends React.PureComponent {
     render() {
         console.log('Header');
         const {
-            user,
+            // user,
             collapsed,
             isMobile,
             logo,
@@ -85,7 +85,7 @@ export default class GlobalHeader extends React.PureComponent {
                         ]) : null
                 }
                 <Icon className={styles.trigger} onClick={this.toggle} type={collapsed ? 'menu-unfold' : 'menu-fold'} />
-                <div className={styles.right}>
+                {/* <div className={styles.right}>
                     {
                         user.fullname ?
                             <Dropdown overlay={this.menu} trigger={triggerMethod}>
@@ -97,7 +97,7 @@ export default class GlobalHeader extends React.PureComponent {
                             :
                             <Spin size="small" style={spinStyle} />
                     }
-                </div>
+                </div> */}
             </div>
         );
     }

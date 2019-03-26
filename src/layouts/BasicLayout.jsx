@@ -34,7 +34,6 @@ export default class BasicLayout extends React.Component {
 
     static propTypes = {
         history: PropTypes.object,
-        getMenu: PropTypes.func,
         menus: PropTypes.array,
         location: PropTypes.object,
         user: PropTypes.object,

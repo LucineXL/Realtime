@@ -5,29 +5,18 @@ import { actions } from 'actions/menu';
 import { ReducerFactory } from 'utils/reducerUtil';
 import { getPermissions, getMenus } from 'utils/menu';
 
+const permissions = [
+    { mark: 'menu_base', name: '一级菜单_点检管理' },
+];
+const codes = getPermissions(permissions || []);
+const menus = getMenus(codes || []);
+
 const initialState = {
-    menus: [],
-    user: {},
+    menus: menus,
     collapsed: false,
 };
+
 const menu = ReducerFactory(initialState, 'menu');
-
-menu.action(actions.GETMENU_PENDING, function (state, action) {
-    return Object.assign({}, state, {
-        menus: [],
-        user: {},
-    });
-});
-
-menu.action(actions.GETMENU_SUCCESS, function (state, action) {
-    const data = (action.payload.data && action.payload.data.data) || {};
-    const codes = getPermissions(data.codes || []);
-    const menus = getMenus(codes || []);
-    return Object.assign({}, state, {
-        menus: menus,
-        user: data.user || {},
-    });
-});
 
 menu.action(actions.UPDATE_COLLAPSED, function (state, action) {
     return Object.assign({}, state, {
