@@ -1,6 +1,3 @@
-/**
- * Created by liudonghui on 17/6/10.
- */
 class Router {
     constructor(routes) {
         this.routes = routes;

@@ -42,17 +42,17 @@ export default class GlobalHeader extends React.PureComponent {
         this.triggerResizeEvent();
     }
 
-    // @Debounce(600)
-    // triggerResizeEvent() {
-    //     if (document.createEvent) {
-    //         const event = document.createEvent('HTMLEvents');
-    //         event.initEvent('resize', true, true);
-    //         window.dispatchEvent(event);
-    //     } else if (document.createEventObject) {
-    //         const event = document.createEventObject();
-    //         window.fireEvent('onresize', event);
-    //     }
-    // }
+    @Debounce(600)
+    triggerResizeEvent() {
+        if (document.createEvent) {
+            const event = document.createEvent('HTMLEvents');
+            event.initEvent('resize', true, true);
+            window.dispatchEvent(event);
+        } else if (document.createEventObject) {
+            const event = document.createEventObject();
+            window.fireEvent('onresize', event);
+        }
+    }
 
     handleMenuClick = (e) => {
         const { handleLogout } = this.props;

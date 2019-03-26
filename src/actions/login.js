@@ -1,6 +1,3 @@
-/**
- * Created by liudonghui on 2018/3/28.
- */
 import { netApi as api } from 'network';
 
 export const actions = {

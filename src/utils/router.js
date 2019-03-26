@@ -1,30 +1,10 @@
-/**
- * Created by liudonghui on 2018/3/31.
- */
-// import AsyncComponent from 'components/AsyncComponent';
-//
-// export default {
-//     BasicLayout: [
-//         {
-//             key: '/dashboard',
-//             path: '/dashboard',
-//             exact: true,
-//             component: AsyncComponent(() => import(/* webpackChunkName: "dashboard" */ 'pages/Dashboard'), true),
-//         },
-//     ],
-// };
-
-
-
-
-/**
- * Created by liudonghui on 2018/3/31.
- */
 import pathToRegexp from 'path-to-regexp';
 import ConnectRoute from 'components/ConnectRoute';
-import Dashboard from 'pages/Dashboard';
+import Chart from 'pages/Chart';
+import Video from 'pages/Video';
 
-const DashboardWrapper = ConnectRoute(Dashboard);
+const ChartWrapper = ConnectRoute(Chart);
+const VideoWrapper = ConnectRoute(Video);
 
 /**
  * 获取扁平化的菜单结构.
@@ -57,9 +37,13 @@ function getFlatMenuData(menus) {
 }
 
 export const basicLayoutRouterConfig = {
-    '/dashboard': {
+    '/chart': {
         exact: true,
-        component: DashboardWrapper,
+        component: ChartWrapper,
+    },
+    '/video': {
+        exact: true,
+        component: VideoWrapper,
     },
 };
 

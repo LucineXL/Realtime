@@ -1,6 +1,3 @@
-/**
- * Created by liudonghui on 17/9/8.
- */
 import * as actions from '../../src/actions/load';
 
 describe('load actions', () => {

@@ -1,5 +1,4 @@
 /**
- * Created by liudonghui on 2017/11/4.
  * api配置和全局拦截.
  */
 

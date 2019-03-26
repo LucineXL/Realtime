@@ -1,6 +1,3 @@
-/**
- * Created by liudonghui on 17/6/19.
- */
 import { actions } from 'actions/load';
 import { ReducerFactory } from 'utils/reducerUtil';
 

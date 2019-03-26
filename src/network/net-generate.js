@@ -1,7 +1,3 @@
-/**
- * Created by liudonghui on 2017/11/4.
- */
-
 import axios from 'axios';
 
 /**

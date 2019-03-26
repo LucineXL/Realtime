@@ -1,6 +1,3 @@
-/**
- * Created by liudonghui on 2018/3/27.
- */
 import { bindActionCreators } from 'redux';
 import { push } from 'react-router-redux';
 import { updateCollapsed } from 'actions/menu';

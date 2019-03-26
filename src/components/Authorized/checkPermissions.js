@@ -1,6 +1,3 @@
-/**
- * Created by liudonghui on 2018/3/15.
- */
 import React from 'react';
 import { isPromise } from 'utils';
 import PromiseRender from './PromiseRender';

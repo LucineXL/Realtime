@@ -1,6 +1,3 @@
-/**
- * Created by liudonghui on 2018/3/15.
- */
 import SVG404 from 'assets/img/404.svg';
 import SVG403 from 'assets/img/403.svg';
 import SVG500 from 'assets/img/500.svg';

@@ -1,10 +1,7 @@
-/**
- * Created by liudonghui on 2018/3/15.
- */
 import pathToRegexp from 'path-to-regexp';
 
 const after_marker = {
-    'menu_base': ['menu.dashboard'],
+    'menu_base': ['menu.chart', 'menu.video'],
 };
 
 export function getPermissions(userPermissions) {
@@ -20,25 +17,29 @@ export function getPermissions(userPermissions) {
     return permissions;
 }
 
-export const rootSubMenuKeys = ['sub1', 'sub2', 'sub3', 'sub4'];
-
 export const appMenu = [
     {
         id: 1,
-        path: '/dashboard',
-        slug: 'menu.dashboard',
-        name: 'Dashboard',
-        icon: 'desktop',
+        path: '/chart',
+        slug: 'menu.chart',
+        name: '图表展示',
+        icon: 'line-chart',
     }, {
         id: 2,
+        path: '/video',
+        slug: 'menu.video',
+        name: '视频展示',
+        icon: 'video-camera',
+    }, {
+        id: 3,
         path: '/exception/403',
         name: '没有权限',
     }, {
-        id: 3,
+        id: 4,
         path: '/exception/404',
         name: '页面不存在',
     }, {
-        id: 4,
+        id: 5,
         path: '/exception/500',
         name: '服务器错误',
     },

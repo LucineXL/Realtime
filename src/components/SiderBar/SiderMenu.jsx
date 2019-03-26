@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Layout, Menu, Icon } from 'antd';
 import { Link } from 'react-router-dom';
 import styles from './index.less';
-import { rootSubMenuKeys, getCurrentMenu, getPathArray } from 'utils/menu';
+import { getCurrentMenu, getPathArray } from 'utils/menu';
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;
@@ -14,6 +14,7 @@ export default class SiderMenu extends React.PureComponent {
         this.state = {
             openKeys: this.getDefaultOpenKeys(props),
         };
+        this.rootSubMenuKeys = ['sub1', 'sub2', 'sub3', 'sub4', 'sub5'];
     }
 
     static propTypes = {
@@ -44,7 +45,7 @@ export default class SiderMenu extends React.PureComponent {
     onOpenChange = (nextOpenKeys) => {
         const { openKeys } = this.state;
         const latestOpenKey = nextOpenKeys.find(key => !(openKeys.indexOf(key) > -1));
-        if (rootSubMenuKeys.indexOf(latestOpenKey) === -1) {
+        if (this.rootSubMenuKeys.indexOf(latestOpenKey) === -1) {
             this.setState({
                 openKeys: nextOpenKeys,
             });

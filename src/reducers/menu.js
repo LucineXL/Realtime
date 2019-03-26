@@ -1,12 +1,9 @@
-/**
- * Created by liudonghui on 2018/3/16.
- */
 import { actions } from 'actions/menu';
 import { ReducerFactory } from 'utils/reducerUtil';
 import { getPermissions, getMenus } from 'utils/menu';
 
 const permissions = [
-    { mark: 'menu_base', name: '一级菜单_点检管理' },
+    { mark: 'menu_base', name: '总权限' },
 ];
 const codes = getPermissions(permissions || []);
 const menus = getMenus(codes || []);

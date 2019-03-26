@@ -31,7 +31,7 @@ export default class Login extends React.PureComponent {
         if (loginStatus !== this.props.loginStatus && loginStatus === 'success') {
             const urlParams = new URL(window.location.href);
             const redirect = urlParams.searchParams.get('redirect');
-            push(redirect || '/dashboard');
+            push(redirect || '/chart');
         }
     }
 

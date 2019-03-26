@@ -1,6 +1,3 @@
-/**
- * Created by liudonghui on 17/9/9.
- */
 import React from 'react';
 import Enzyme, { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
