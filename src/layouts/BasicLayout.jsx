@@ -4,7 +4,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { enquireScreen } from 'enquire-js';
 import mapToProps from './BasicLayoutMapping';
-import logo from 'assets/img/logo.svg';
+import logo from 'assets/img/new_logo.jpeg';
 import { appMenu, getRedirect } from 'utils/menu';
 import { basicLayoutRouterConfig, getRouterData } from 'utils/router';
 import { netApi as api } from 'network';

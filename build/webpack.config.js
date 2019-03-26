@@ -37,7 +37,7 @@ module.exports = {
             CODE_ENV: JSON.stringify(process.env.CODE_ENV)
         }),
         new HtmlWebpackPlugin({
-            title: 'xxx系统',
+            title: '云监管平台',
             template: src('index.html'),
             filename: 'index.html',
             minify: {
@@ -52,7 +52,7 @@ module.exports = {
                 removeComments: true
             },
             chunks: ['runtime', 'vendor', 'main'],
-            favicon: src('favicon.ico'),
+            favicon: src('assets/img/new_logo.jpeg'),
             chunksSortMode: 'dependency'
         }),
         new InlineManifestWebpackPlugin('runtime')
