@@ -22,10 +22,8 @@ export default function configureStore(initialState) {
     if (process.env.NODE_ENV === 'development') {
         const myPersistState = require('redux-devtools').persistState;
 
-        const enhancer = compose(
-            window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(), // eslint-disable-line
-            myPersistState(window.location.href.match(/[?&]debug_session=([^&#]+)\b/)),
-        );
+        const enhancer = compose(myPersistState(window.location.href.match(/[?&]debug_session=([^&#]+)\b/)));
+        // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(), // eslint-disable-line
         store = createStoreWithMiddleware(reducer, initialState, enhancer);
 
         if (module.hot) {
