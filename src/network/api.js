@@ -21,7 +21,7 @@ const removePending = (config) => {
 
 export const config = {
     baseURL: globalConfig.apiHost,
-    withCredentials: true,
+    withCredentials: false,
     timeout: 30000,
 };
 

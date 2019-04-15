@@ -13,9 +13,13 @@ export default class Chart extends React.PureComponent {
         form: PropTypes.object,
         loginStatus: PropTypes.string,
         push: PropTypes.func,
+        getInfo: PropTypes.func,
     }
 
     componentDidMount() {
+        this.props.getInfo({
+            placeNam: '西安电子科技大学',
+        });
     }
 
     render() {
