@@ -33,7 +33,16 @@ if (isDeveloping) {
             var html = mfs.readFileSync(file);
             res.end(html);
         })
-    })
+    });
+    app.use('/api/*', proxy({
+        target: 'http://39.96.216.17',
+        changeOrigin: true,
+        secure: false, 
+        onProxyRes: function (proxyRes, req, res) {
+            proxyRes.setHeader('Access-Control-Allow-Origin', '*');
+            proxyRes.setHeader('Content-Type', 'application/json');
+        },
+    })); // 与后台联调时,如果后台没有做跨域处理的话,可以通过设置代理的方式来解决跨域的问题
 } else {
     app.get('/', function (req, res) {
         res.sendFile(path.resolve(__dirname, 'dist', 'index.html'))
@@ -41,16 +50,6 @@ if (isDeveloping) {
 }
 
 var port = isProduction ? (process.env.PORT || 80) : 3000;
-
-// app.use('/api/*', proxy({
-//     target: 'http://39.96.216.17',
-//     changeOrigin: true,
-//     secure: false, 
-//     onProxyRes: function (proxyRes, req, res) {
-//         proxyRes.setHeader('Access-Control-Allow-Origin', '*');
-//         proxyRes.setHeader('Access-Control-Allow-Credentials', 'true');
-//     },
-// })); // 与后台联调时,如果后台没有做跨域处理的话,可以通过设置代理的方式来解决跨域的问题
 
 app.listen(port, function (err, result) {
     if (err) {
