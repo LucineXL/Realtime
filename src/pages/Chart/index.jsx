@@ -13,7 +13,8 @@ export default class Chart extends React.PureComponent {
         this.state = {
             chartData: {
                 xAxis: [],
-                yAxis: [],
+                peopleTotalNumAxis: [],
+                redPeopleNumAxis: [],
                 place: '',
             },
         };
@@ -57,17 +58,19 @@ export default class Chart extends React.PureComponent {
             to: now,
         }).then((res) => {
             const xAxis = []; 
-            const yAxis = [];
+            const peopleTotalNumAxis = [];
+            const redPeopleNumAxis = [];
             let place = '';
             if (res && res.data && res.data.code === 0 && res.data.data) {
                 res.data.data.forEach((item) => {
-                    const { placeTime, peopleTotalNum, placeName } = item;
+                    const { placeTime, peopleTotalNum, redPeopleNum, placeName } = item;
                     xAxis.push(placeTime);
-                    yAxis.push(peopleTotalNum);
+                    peopleTotalNumAxis.push(peopleTotalNum);
+                    redPeopleNumAxis.push(redPeopleNum);
                     place = placeName;
                 });
                 this.setState({
-                    chartData: { xAxis, yAxis, place },
+                    chartData: { xAxis, peopleTotalNumAxis, redPeopleNumAxis, place },
                 });
             }
         }).catch((err) => {});
@@ -80,6 +83,15 @@ export default class Chart extends React.PureComponent {
             title: {
                 text: '公共地点人流量云监管数据图表',
             },
+            legend: {
+                data: ['peopleTotalNum', 'redPeopleNum'],
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true,
+            },
             xAxis: {
                 type: 'category',
                 boundaryGap: false,
@@ -89,7 +101,13 @@ export default class Chart extends React.PureComponent {
                 type: 'value',
             },
             series: [{
-                data: chartData.yAxis || [],
+                name: 'peopleTotalNum',
+                data: chartData.peopleTotalNumAxis || [],
+                type: 'line',
+                areaStyle: {},
+            }, {
+                name: 'redPeopleNum',
+                data: chartData.redPeopleNumAxis || [],
                 type: 'line',
                 areaStyle: {},
             }],
