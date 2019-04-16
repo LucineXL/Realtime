@@ -28,14 +28,25 @@ export default class Chart extends React.PureComponent {
     }
 
     componentDidMount() {
+        this.getPlaceInfo();
         this.getInfo();
         this.timer = setInterval(() => {
             this.getInfo();
-        }, 5000);
+        }, 60000);
     }
 
     componentWillUnmount() {
         clearInterval(this.timer);
+    }
+
+    getPlaceInfo = async () => {
+        await api.post('/output/PeopleManagerINfo/getInfo', { 
+            placeName: '东泽园',
+        }).then((res) => {
+            if (res && res.data && res.data.code === 0 && res.data.data) {
+                console.log(res);
+            }
+        }).catch((err) => {});
     }
 
     getInfo = async () => {
@@ -86,6 +97,7 @@ export default class Chart extends React.PureComponent {
         return (
             <div className={styles.chartWrapper}>
                 <ReactEcharts option={option} style={{ width: '100%' }}/>
+                <div>监管地点： {chartData.place}</div>
             </div>
         );
     }
