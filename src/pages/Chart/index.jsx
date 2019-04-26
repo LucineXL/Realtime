@@ -122,6 +122,7 @@ export default class Chart extends React.PureComponent {
                 data: ['peopleTotalNum', 'redPeopleNum'],
                 itemGap: 5,
                 right: 0,
+                top: 25,
             },
             grid: {
                 top: '12%',
