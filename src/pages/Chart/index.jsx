@@ -5,16 +5,16 @@ import ReactEcharts from 'echarts-for-react';
 import moment from 'moment';
 import { netApi as api } from 'network';
 import { Select } from 'antd';
+import { getSelectOptions } from 'utils';
 import mapToProps from './mapping';
 import styles from './index.less';
 
-const { Option } = Select;
 @connect(mapToProps.mapStateToProps, mapToProps.mapDispatchToProps)
 export default class Chart extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            place: 'test1',
+            place: undefined,
             chartData: {
                 xAxis: [],
                 peopleTotalNumAxis: [],
@@ -30,11 +30,27 @@ export default class Chart extends React.PureComponent {
         loginStatus: PropTypes.string,
         push: PropTypes.func,
         getInfo: PropTypes.func,
+        getAllPlace: PropTypes.func,
+        allPlace: PropTypes.array,
+    }
+
+    componentWillReceiveProps(nexrProps) {
+        const { allPlace } = nexrProps;
+        const { place } = this.state;
+        if (!place && JSON.stringify(allPlace) !== JSON.stringify(this.props.allPlace)) {
+            this.setState({
+                place: allPlace && allPlace[0] ? { key: allPlace[0].id, label: allPlace[0].name } : undefined,
+            }, () => {
+                this.getChartData();
+            });
+        }
     }
 
     componentDidMount() {
-        this.getChartData();
+        const { allPlace, getAllPlace } = this.props;
+        allPlace && allPlace.length <= 0 && getAllPlace();
     }
+
 
     componentWillUnmount() {
         clearInterval(this.timer);
@@ -57,9 +73,12 @@ export default class Chart extends React.PureComponent {
      */
     getPlaceInfo = async () => {
         const { place } = this.state;
+        if (!place) {
+            return;
+        }
         await api.post('/output/PeopleManagerINfo/getInfo', { 
-            placeName: '东泽园',
-            place,
+            placeName: place.label,
+            placeId: place.key ? Number(place.key) : undefined,
         }).then((res) => {
             if (res && res.data && res.data.code === 0 && res.data.data) {
                 console.log(res);
@@ -72,11 +91,15 @@ export default class Chart extends React.PureComponent {
      */
     getInfo = async () => {
         const { place } = this.state;
+        if (!place) {
+            return;
+        }
         const now = new Date().getTime();
         await api.post('/output/PlaceMinitorINfo/getInfo', { 
-            from: now - 1000 * 60 * 60,
-            to: now,
-            place,
+            placeTimeFrom: now - 1000 * 60 * 60,
+            placeTimeTo: now,
+            placeName: place.label,
+            placeId: place.key ? Number(place.key) : undefined,
         }).then((res) => {
             const xAxis = []; 
             const peopleTotalNumAxis = [];
@@ -109,6 +132,7 @@ export default class Chart extends React.PureComponent {
     }
 
     render() {
+        const { allPlace } = this.props;
         const { chartData, place } = this.state;
         const option = {
             title: {
@@ -162,13 +186,9 @@ export default class Chart extends React.PureComponent {
         return (
             <div className={styles.chartWrapper}>
                 <div className={styles.chartHead}>
-                    地点：<Select style={{ width: '120px' }} value={place}
+                    地点：<Select style={{ width: '120px' }} value={place} labelInValue
                         onChange={this.changePlace}>
-                        {
-                            ['test1', 'test2'].map(item => (
-                                <Option value={item} key={item}>{item}</Option>
-                            ))
-                        }
+                        {getSelectOptions(undefined, allPlace, undefined)}
                     </Select>
                 </div>
                 <ReactEcharts option={option} style={{ width: '100%', height: '80%' }}/>
