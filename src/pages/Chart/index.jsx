@@ -24,10 +24,6 @@ export default class Chart extends React.PureComponent {
         };
     }
     static propTypes = {
-        location: PropTypes.object,
-        login: PropTypes.func,
-        form: PropTypes.object,
-        loginStatus: PropTypes.string,
         push: PropTypes.func,
         getInfo: PropTypes.func,
         getAllPlace: PropTypes.func,
