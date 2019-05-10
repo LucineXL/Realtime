@@ -15,6 +15,7 @@ export default class Chart extends React.PureComponent {
         super(props);
         this.state = {
             place: undefined,
+            securityPersonnelName: '',
             chartData: {
                 xAxis: [],
                 peopleTotalNumAxis: [],
@@ -78,6 +79,10 @@ export default class Chart extends React.PureComponent {
         }).then((res) => {
             if (res && res.data && res.data.code === 0 && res.data.data) {
                 console.log(res);
+                const securityPersonnelName = res.data.data && res.data.data[0] && res.data.data[0].securityPersonnelName || '';
+                this.setState({
+                    securityPersonnelName,
+                });
             }
         }).catch((err) => {});
     }
@@ -129,7 +134,7 @@ export default class Chart extends React.PureComponent {
 
     render() {
         const { allPlace } = this.props;
-        const { chartData, place } = this.state;
+        const { chartData, place, securityPersonnelName } = this.state;
         const option = {
             title: {
                 text: '公共地点人流量云监管数据图表',
@@ -188,7 +193,8 @@ export default class Chart extends React.PureComponent {
                     </Select>
                 </div>
                 <ReactEcharts option={option} style={{ width: '100%', height: '80%' }}/>
-                <div style={{ marginTop: '20px' }}>监管地点： {chartData.place}</div>
+                <div style={{ marginTop: '20px' }}>监管地点： {chartData.place || '-'}</div>
+                <div style={{ marginTop: '20px' }}>监管人员： {securityPersonnelName}</div>
             </div>
         );
     }
