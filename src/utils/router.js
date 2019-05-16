@@ -3,10 +3,12 @@ import ConnectRoute from 'components/ConnectRoute';
 import Chart from 'pages/Chart';
 import Video from 'pages/Video';
 import LiveBroadcast from 'pages/LiveBroadcast';
+import SetPerson from 'pages/SetPerson';
 
 const ChartWrapper = ConnectRoute(Chart);
 const VideoWrapper = ConnectRoute(Video);
 const LiveBroadcastWrapper = ConnectRoute(LiveBroadcast);
+const SetPersonWrapper = ConnectRoute(SetPerson);
 
 /**
  * 获取扁平化的菜单结构.
@@ -50,6 +52,10 @@ export const basicLayoutRouterConfig = {
     '/liveBroadcast': {
         exact: true,
         component: LiveBroadcastWrapper,
+    },
+    '/setPerson': {
+        exact: true,
+        component: SetPersonWrapper,
     },
 };
 

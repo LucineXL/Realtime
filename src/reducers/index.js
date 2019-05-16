@@ -4,6 +4,7 @@ import load from './load';
 import menu from './menu';
 import login from './login';
 import chart from './chart';
+import setPerson from './setPerson';
 
 const rootReducer = combineReducers({
     router: routerReducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
     menu,
     login,
     chart,
+    setPerson,
 });
 
 export default rootReducer;

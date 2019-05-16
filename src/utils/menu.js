@@ -1,7 +1,7 @@
 import pathToRegexp from 'path-to-regexp';
 
 const after_marker = {
-    'menu_base': ['menu.chart', 'menu.video', 'menu.liveBroadcast'],
+    'menu_base': ['menu.chart', 'menu.video', 'menu.liveBroadcast', 'menu.setPerson', 'menu.setPlace'],
 };
 
 export function getPermissions(userPermissions) {
@@ -36,6 +36,12 @@ export const appMenu = [
         slug: 'menu.liveBroadcast',
         name: '视频直播',
         icon: 'notification',
+    }, {
+        id: 7,
+        path: '/setPerson',
+        slug: 'menu.setPerson',
+        name: '人员管理',
+        icon: 'setting',
     }, {
         id: 3,
         path: '/exception/403',
