@@ -19,8 +19,8 @@ export default class setPerson extends React.PureComponent {
         };
         this.columns = [
             {
-                title: '编号',
-                dataIndex: 'id',
+                title: '地点编号ID',
+                dataIndex: 'placeId',
                 align: 'center',
             },
             {
