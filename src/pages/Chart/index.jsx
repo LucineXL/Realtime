@@ -80,8 +80,11 @@ export default class Chart extends React.PureComponent {
             if (res && res.data && res.data.code === 0 && res.data.data) {
                 console.log(res);
                 const securityPersonnelName = res.data.data && res.data.data[0] && res.data.data[0].securityPersonnelName || '';
+                const securityPersonnelPhone = res.data.data && res.data.data[0] && res.data.data[0].securityPersonnelPhone || '';
+                const securityPersonnelAddress = res.data.data && res.data.data[0] && res.data.data[0].securityPersonnelAddress || '';
+                const securityPersonnelMail = res.data.data && res.data.data[0] && res.data.data[0].securityPersonnelMail || '';
                 this.setState({
-                    securityPersonnelName,
+                    securityPersonnelName, securityPersonnelPhone, securityPersonnelAddress, securityPersonnelMail,
                 });
             }
         }).catch((err) => {});
@@ -134,7 +137,7 @@ export default class Chart extends React.PureComponent {
 
     render() {
         const { allPlace } = this.props;
-        const { chartData, place, securityPersonnelName } = this.state;
+        const { chartData, place, securityPersonnelName, securityPersonnelPhone } = this.state;
         const option = {
             title: {
                 text: '公共地点人流量云监管数据图表',
@@ -194,7 +197,8 @@ export default class Chart extends React.PureComponent {
                 </div>
                 <ReactEcharts option={option} style={{ width: '100%', height: '80%' }}/>
                 <div style={{ marginTop: '20px' }}>监管地点： {chartData.place || '-'}</div>
-                <div style={{ marginTop: '20px' }}>监管人员： {securityPersonnelName}</div>
+                <div style={{ marginTop: '20px' }}>推荐保安组织人员： {securityPersonnelName}</div>
+                <div style={{ marginTop: '20px' }}>推荐人员联系方式： {securityPersonnelPhone}</div>
             </div>
         );
     }
