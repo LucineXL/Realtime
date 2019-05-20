@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import ReactEcharts from 'echarts-for-react';
 import moment from 'moment';
 import { netApi as api } from 'network';
-import { Select } from 'antd';
+import { Select, Row, Col } from 'antd';
 import { getSelectOptions } from 'utils';
 import mapToProps from './mapping';
 import styles from './index.less';
@@ -15,6 +15,8 @@ export default class Chart extends React.PureComponent {
         super(props);
         this.state = {
             place: undefined,
+            sort: '0',
+            sortPlace: [],
             securityPersonnelName: '',
             chartData: {
                 xAxis: [],
@@ -35,17 +37,17 @@ export default class Chart extends React.PureComponent {
         const { allPlace } = nexrProps;
         const { place } = this.state;
         if (!place && JSON.stringify(allPlace) !== JSON.stringify(this.props.allPlace)) {
-            this.setState({
-                place: allPlace && allPlace[0] ? { key: allPlace[0].id, label: allPlace[0].name } : undefined,
-            }, () => {
-                this.getChartData();
-            });
+            this.setPlace(allPlace);
         }
     }
 
     componentDidMount() {
         const { allPlace, getAllPlace } = this.props;
-        allPlace && allPlace.length <= 0 && getAllPlace();
+        if (allPlace && allPlace.length) {
+            this.setPlace(allPlace);
+        } else {
+            getAllPlace();
+        }
     }
 
 
@@ -54,11 +56,33 @@ export default class Chart extends React.PureComponent {
     }
 
     /**
+     * 时间参数; { placeTimeFrom: 一小时前时间戳，placeTimeTo： 现在时间戳 }
+     */
+    getTime = () => {
+        const now = new Date().getTime();
+        return {
+            placeTimeFrom: now - 1000 * 60 * 60,
+            placeTimeTo: now,
+        };
+    }
+
+    /**
+     * 设置选中地点
+     */
+    setPlace = (allPlace) => {
+        this.setState({
+            place: allPlace && allPlace[0] ? { key: allPlace[0].id, label: allPlace[0].name } : undefined,
+        }, () => {
+            this.getChartData();
+        });
+    }
+    /**
      * 获取页面所需数据
      */
     getChartData = () => {
-        clearInterval(this.timer);
+        this.timer && clearInterval(this.timer);
         this.getPlaceInfo();
+        this.getPlaceSort();
         this.getInfo();
         this.timer = setInterval(() => {
             this.getInfo();
@@ -73,7 +97,7 @@ export default class Chart extends React.PureComponent {
         if (!place) {
             return;
         }
-        await api.post('/output/PeopleManagerINfo/getInfo', { 
+        await api.post('/output/PeopleManagerINfo/getInfo', {
             placeName: place.label,
             placeId: place.key ? Number(place.key) : undefined,
         }).then((res) => {
@@ -98,14 +122,13 @@ export default class Chart extends React.PureComponent {
         if (!place) {
             return;
         }
-        const now = new Date().getTime();
-        await api.post('/output/PlaceMinitorINfo/getInfo', { 
-            placeTimeFrom: now - 1000 * 60 * 60,
-            placeTimeTo: now,
+        const timeParam = this.getTime();
+        await api.post('/output/PlaceMinitorINfo/getInfo', {
+            ...timeParam,
             placeName: place.label,
             placeId: place.key ? Number(place.key) : undefined,
         }).then((res) => {
-            const xAxis = []; 
+            const xAxis = [];
             const peopleTotalNumAxis = [];
             const redPeopleNumAxis = [];
             let place = '';
@@ -123,7 +146,38 @@ export default class Chart extends React.PureComponent {
             }
         }).catch((err) => {});
     }
-    
+
+    /**
+     * 获取地点排序信息
+     */
+    getPlaceSort = async () => {
+        const { sort } = this.state;
+        const timeParam = this.getTime();
+        await api.post('/output/PlaceMinitorINfo/sort', {
+            sortType: Number(sort),
+            ...timeParam,
+            placeTimeFrom: 1556101850950,
+            placeTimeTo: 1558186702397,
+        }).then((res) => {
+            if (res && res.data && res.data.code === 0 && res.data.data) {
+                const sortPlace = res.data.data.slice(0, 3);
+                this.setState({ sortPlace });
+            }
+        });
+    }
+
+    /**
+     * 切换排序方式
+     */
+    changeSort = (sort) => {
+        this.setState({
+            sort,
+        }, () => {
+            this.getPlaceSort();
+        });
+    }
+
+
     /**
      * 切换地点
      */
@@ -137,7 +191,7 @@ export default class Chart extends React.PureComponent {
 
     render() {
         const { allPlace } = this.props;
-        const { chartData, place, securityPersonnelName, securityPersonnelPhone } = this.state;
+        const { chartData, place, securityPersonnelName, securityPersonnelPhone, sort, sortPlace } = this.state;
         const option = {
             title: {
                 text: '公共地点人流量云监管数据图表',
@@ -196,9 +250,33 @@ export default class Chart extends React.PureComponent {
                     </Select>
                 </div>
                 <ReactEcharts option={option} style={{ width: '100%', height: '80%' }}/>
-                <div style={{ marginTop: '20px' }}>监管地点： {chartData.place || '-'}</div>
-                <div style={{ marginTop: '20px' }}>推荐保安组织人员： {securityPersonnelName}</div>
-                <div style={{ marginTop: '20px' }}>推荐人员联系方式： {securityPersonnelPhone}</div>
+                <Row className={styles.footerCon}>
+                    <Col md={12} sm={24} className={styles.leftFooter}>
+                        <div style={{ marginTop: '20px' }}>监管地点： {chartData.place || '-'}</div>
+                        <div style={{ marginTop: '20px' }}>推荐保安组织人员： {securityPersonnelName}</div>
+                        <div style={{ marginTop: '20px' }}>推荐人员联系方式： {securityPersonnelPhone}</div>
+                    </Col>
+                    <Col md={12} sm={24} className={styles.rightFooter}>
+                        <Row className={''}>
+                            <Col md={16} sm={24} className={styles.sortSelect}>
+                            排序方式：
+                                <Select style={{ width: '150px' }} value={sort} onChange={this.changeSort}>
+                                    {getSelectOptions(undefined, [
+                                        { id: 0, name: '人流异常爆发' },
+                                        { id: 2, name: '人流量较大' },
+                                    ], undefined)}
+                                </Select>
+                            </Col>
+                            <Col md={8} sm={24} className={styles.sortPlace}>
+                                {
+                                    sortPlace && sortPlace.length ? sortPlace.map(({ placeId, placeName }, index) => (
+                                        <div key={placeId}>{`${index + 1}: ${placeName}`}</div>
+                                    )) : null
+                                }
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
             </div>
         );
     }
