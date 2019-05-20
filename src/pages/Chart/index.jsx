@@ -263,7 +263,7 @@ export default class Chart extends React.PureComponent {
                                 <Select style={{ width: '150px' }} value={sort} onChange={this.changeSort}>
                                     {getSelectOptions(undefined, [
                                         { id: 0, name: '人流异常爆发' },
-                                        { id: 2, name: '人流量较大' },
+                                        { id: 1, name: '人流量较大' },
                                     ], undefined)}
                                 </Select>
                             </Col>
