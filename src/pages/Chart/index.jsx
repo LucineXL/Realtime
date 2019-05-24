@@ -257,7 +257,7 @@ export default class Chart extends React.PureComponent {
                     <Col md={12} sm={24} className={styles.rightFooter}>
                         <Row className={''}>
                             <Col md={16} sm={24} className={styles.sortSelect}>
-                            排序方式：
+                            一小时内排序：
                                 <Select style={{ width: '150px' }} value={sort} onChange={this.changeSort}>
                                     {getSelectOptions(undefined, [
                                         { id: 0, name: '人流异常爆发' },
