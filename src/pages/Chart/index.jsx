@@ -156,8 +156,6 @@ export default class Chart extends React.PureComponent {
         await api.post('/output/PlaceMinitorINfo/sort', {
             sortType: Number(sort),
             ...timeParam,
-            placeTimeFrom: 1556101850950,
-            placeTimeTo: 1558186702397,
         }).then((res) => {
             if (res && res.data && res.data.code === 0 && res.data.data) {
                 const sortPlace = res.data.data.slice(0, 3);

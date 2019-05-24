@@ -36,7 +36,7 @@ export default class Video extends React.PureComponent {
             });
         }
     }
-    
+
     componentDidMount() {
         const { allPlace, getAllPlace } = this.props;
         allPlace && allPlace.length <= 0 && getAllPlace();
@@ -49,6 +49,14 @@ export default class Video extends React.PureComponent {
         }
     }
 
+    changePlace = (value) => {
+        this.setState({
+            place: value,
+        }, () => {
+            this.getVideo();
+        });
+    }
+
 
     getVideo = async () => {
         const { place } = this.state;
@@ -56,7 +64,6 @@ export default class Video extends React.PureComponent {
             return;
         }
         await api.post('/output/video/getVideoList', {
-            // test: '12',
             placeName: place.label,
             placeId: place.key ? Number(place.key) : undefined,
         }).then((res) => {
