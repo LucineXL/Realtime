@@ -49,20 +49,13 @@ export default class LiveBroadcast extends React.PureComponent {
     }
 
     setWebsocket = () => {
-        const { place } = this.state;
         if ('WebSocket' in window) {
             console.log('您的浏览器支持 WebSocket!');
-            let ws = new WebSocket('ws://39.96.216.17:80/websocket'); // 创建websocket连接
+            let ws = new WebSocket('ws://10.112.113.14:80/websocket'); // 创建websocket连接
             ws.onopen = function (evt) {
                 console.log('连接打开。。。');
-                // ws.send(place.key);
             };
-            ws.onmessage = function (evt) {
-                console.log('收到的信息：' + evt.data);
-                if (evt.data === 'ready') {
-                    ws.send(place.key);
-                }
-            };
+            ws.onmessage = evt => this.getMessage(evt);
             ws.onclose = function (e) {
                 // 关闭 websocket
                 console.log('连接已关闭...');
@@ -71,6 +64,22 @@ export default class LiveBroadcast extends React.PureComponent {
             this.ws = ws;
         }
 
+    }
+
+    /**
+     * 接收到数据的回调
+     */
+    getMessage = (evt) => {
+        const { data } = evt;
+        const { place } = this.state;
+        console.log('收到的信息：' + data);
+        if (data === 'ready') {
+            this.ws.send(place.key);
+        } else {
+            this.setState({
+                msg: data,
+            });
+        }
     }
 
     changePlace = (value) => {
@@ -92,6 +101,7 @@ export default class LiveBroadcast extends React.PureComponent {
                         {getSelectOptions(undefined, allPlace, undefined)}
                     </Select>
                 </div>
+                {this.state.msg}
             </div>
         );
     }
