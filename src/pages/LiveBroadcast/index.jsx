@@ -51,7 +51,7 @@ export default class LiveBroadcast extends React.PureComponent {
     setWebsocket = () => {
         if ('WebSocket' in window) {
             console.log('您的浏览器支持 WebSocket!');
-            let ws = new WebSocket('ws://10.112.113.14:80/websocket'); // 创建websocket连接
+            let ws = new WebSocket('ws://39.96.216.17:80/websocket'); // 创建websocket连接
             ws.onopen = function (evt) {
                 console.log('连接打开。。。');
             };
