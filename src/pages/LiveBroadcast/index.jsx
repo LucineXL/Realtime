@@ -14,7 +14,7 @@ export default class LiveBroadcast extends React.PureComponent {
         super(props);
         this.state = {
             place: undefined,
-            videoList: [],
+            videoData: null,
         };
     }
 
@@ -76,8 +76,9 @@ export default class LiveBroadcast extends React.PureComponent {
         if (data === 'ready') {
             this.ws.send(place.key);
         } else {
+            const videoData = data ? JSON.parse(data) : null;
             this.setState({
-                msg: data,
+                videoData: videoData,
             });
         }
     }
@@ -92,7 +93,8 @@ export default class LiveBroadcast extends React.PureComponent {
 
     render() {
         const { allPlace } = this.props;
-        const { place } = this.state;
+        const { place, videoData = {} } = this.state;
+        const { video, redPeopleNum, peopleTotalNum } = videoData || {};
         return (
             <div className={styles.videoWrapper}>
                 <div className={styles.chartHead}>
@@ -101,7 +103,9 @@ export default class LiveBroadcast extends React.PureComponent {
                         {getSelectOptions(undefined, allPlace, undefined)}
                     </Select>
                 </div>
-                {this.state.msg}
+                {peopleTotalNum && <div className={styles.textRow}>当前人流总数：{peopleTotalNum}</div>}
+                {redPeopleNum && <div className={styles.textRow}>当前拥挤总数：{JSON.stringify(redPeopleNum)}</div>}
+                {video && <img src={`data:image/jpeg;base64,${video}`} alt="" className={styles.videoImg}/>}
             </div>
         );
     }
