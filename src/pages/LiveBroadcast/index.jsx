@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Select } from 'antd';
 import { getSelectOptions } from 'utils';
+import globalConfig from '../../globalConfig';
 import mapToProps from './mapping';
 import styles from './index.less';
 
@@ -24,8 +25,14 @@ export default class LiveBroadcast extends React.PureComponent {
         allPlace: PropTypes.array,
     }
 
-    componentWillReceiveProps(nexrProps) {
-        const { allPlace } = nexrProps;
+    shouldComponentUpdate(nextProps, nextState) {
+        const { video: nextVideo } = nextState.videoData || {};
+        const { video } = this.state.videoData || {};
+        return video !== nextVideo;
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const { allPlace } = nextProps;
         const { place } = this.state;
         if (!place && JSON.stringify(allPlace) !== JSON.stringify(this.props.allPlace)) {
             this.setState({
@@ -51,7 +58,7 @@ export default class LiveBroadcast extends React.PureComponent {
     setWebsocket = () => {
         if ('WebSocket' in window) {
             console.log('您的浏览器支持 WebSocket!');
-            let ws = new WebSocket('ws://39.96.216.17:80/websocket'); // 创建websocket连接
+            let ws = new WebSocket(globalConfig.socketUrl); // 创建websocket连接
             ws.onopen = function (evt) {
                 console.log('连接打开。。。');
             };
@@ -74,13 +81,16 @@ export default class LiveBroadcast extends React.PureComponent {
         const { place } = this.state;
         console.log('收到的信息：' + data);
         if (data === 'ready') {
-            this.ws.send(place.key);
+            // this.ws.send(place.key);
         } else {
             const videoData = data ? JSON.parse(data) : null;
             this.setState({
                 videoData: videoData,
             });
         }
+        setTimeout(() => {
+            this.ws.send(place.key);
+        }, 500);
     }
 
     changePlace = (value) => {
