@@ -90,7 +90,7 @@ export default class LiveBroadcast extends React.PureComponent {
         }
         setTimeout(() => {
             this.ws.send(place.key);
-        }, 500);
+        }, 100);
     }
 
     changePlace = (value) => {
